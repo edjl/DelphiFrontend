@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'tabs.dart';
+import '../constants/graphics_constants.dart';
 
 class SkeletonPage extends StatefulWidget {
   const SkeletonPage({super.key});
@@ -29,8 +30,8 @@ class _SkeletonPageState extends State<SkeletonPage> {
     return CircleAvatar(
       radius: 24, // Size of the circle
       backgroundColor: _selectedIndex == index
-          ? Color.fromARGB(255, 23, 153, 28) // Green color for selected
-          : Colors.transparent, // Transparent for unselected
+          ? GraphicsConstants.colorTheme
+          : Colors.transparent,
       child: Padding(
         padding: const EdgeInsets.all(10.0), // Adjust padding as needed
         child: assetPath != null
@@ -57,34 +58,38 @@ class _SkeletonPageState extends State<SkeletonPage> {
         child: _widgetOptions.elementAt(_selectedIndex),
       ),
       bottomNavigationBar: BottomNavigationBar(
-        backgroundColor: const Color.fromARGB(255, 255, 255, 255),
         items: <BottomNavigationBarItem>[
           BottomNavigationBarItem(
             icon: _buildIcon(0, Icons.store, null),
             label: 'Store',
+            backgroundColor: GraphicsConstants.lightColorTheme,
           ),
           BottomNavigationBarItem(
             icon: _buildIcon(1, Icons.person, null),
             label: 'Profile',
+            backgroundColor: GraphicsConstants.lightColorTheme,
           ),
           BottomNavigationBarItem(
             icon: _buildIcon(2, null, 'images/icons8-chip-100.png'),
             label: 'Bet',
+            backgroundColor: GraphicsConstants.lightColorTheme,
           ),
           BottomNavigationBarItem(
             icon: _buildIcon(3, Icons.folder, null),
             label: 'Shares',
+            backgroundColor: GraphicsConstants.lightColorTheme,
           ),
           BottomNavigationBarItem(
             icon: _buildIcon(4, Icons.leaderboard, null),
             label: 'Rankings',
+            backgroundColor: GraphicsConstants.lightColorTheme,
           ),
         ],
         currentIndex: _selectedIndex,
-        selectedItemColor: Color.fromARGB(
-            255, 23, 153, 28), // Color of the label of the selected item
-        unselectedItemColor: const Color.fromARGB(
-            255, 0, 0, 0), // Color of the label of unselected items
+        selectedItemColor: GraphicsConstants
+            .colorTheme, // Color of the label of the selected item
+        unselectedItemColor:
+            Colors.black, // Color of the label of unselected items
         showSelectedLabels: true,
         showUnselectedLabels: true,
         onTap: _onItemTapped,
