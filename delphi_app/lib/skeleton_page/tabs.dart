@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import '../authentication/login_page.dart';
+import '../profile/profile_page.dart';
 
 class StoreTab extends StatelessWidget {
   const StoreTab({super.key});
@@ -14,7 +16,7 @@ class ProfileTab extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return const Text('Profile Tab, coming soon!');
+    return const ProfilePage();
   }
 }
 
