@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import '../authentication/login_page.dart';
 import '../profile/profile_page.dart';
 
 class StoreTab extends StatelessWidget {

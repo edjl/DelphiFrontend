@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'skeleton_page/skeleton_page.dart';
-import 'profile/model/user_profile.dart';
 import 'profile/user_profile_service.dart';
 
 void main() {
