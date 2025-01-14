@@ -1,6 +1,6 @@
 import 'dart:convert';
 import 'package:http/http.dart' as http;
-import 'model/login_response.dart';
+import '../model/login_response.dart';
 
 class AuthenticationService {
   static Future<LoginResponse?> login(String email, String password) async {

@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import '../profile/profile_page.dart';
+import '../bet/bet_main_page.dart';
 
 class StoreTab extends StatelessWidget {
   const StoreTab({super.key});
@@ -24,7 +25,7 @@ class BetTab extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return const Text('Bet Tab, coming soon!');
+    return BetMainPage();
   }
 }
 
