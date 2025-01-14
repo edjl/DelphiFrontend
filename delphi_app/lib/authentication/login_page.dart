@@ -2,8 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http; // Import the http package
 import 'dart:convert'; // For JSON decoding
 import 'authentication_service.dart'; // Assuming you have the AuthenticationService class
-import 'model/login_response.dart'; // Assuming you have the LoginResponse model
-import '../profile/model/user_profile.dart'; // Import UserProfile singleton
+import '../model/login_response.dart'; // Assuming you have the LoginResponse model
+import '../model/user_profile.dart'; // Import UserProfile singleton
 import '../profile/user_profile_service.dart';
 
 class LoginPage extends StatefulWidget {

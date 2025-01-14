@@ -1,6 +1,6 @@
 import 'dart:convert';
 import 'package:http/http.dart' as http;
-import 'model/option.dart';
+import '../model/option.dart';
 
 class GetOptionsService {
   static Future<List<Option>> getOptions(int? userId, String eventName) async {

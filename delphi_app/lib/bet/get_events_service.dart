@@ -1,7 +1,7 @@
 import 'dart:convert';
 import 'package:http/http.dart' as http;
-import 'model/event.dart';
-import '../profile/model/user_profile.dart';
+import '../model/event.dart';
+import '../model/user_profile.dart';
 
 class GetEventsService {
   static Future<List<Event>> getEvents(int? userId, List<String>? categories,
@@ -27,7 +27,9 @@ class GetEventsService {
     try {
       final response = await http.get(url);
 
-      if (response.statusCode == 200) {
+      if (response.statusCode == 400) {
+        return Future.value([]);
+      } else if (response.statusCode == 200) {
         final Map<String, dynamic> responseBody = jsonDecode(response.body);
         if (responseBody['success'] == true) {
           events = responseBody['outcomes'];

@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'tabs.dart';
 import '../constants/graphics_constants.dart';
+import '../profile/user_profile_service.dart';
 
 class SkeletonPage extends StatefulWidget {
   const SkeletonPage({super.key});
@@ -24,6 +25,10 @@ class _SkeletonPageState extends State<SkeletonPage> {
     setState(() {
       _selectedIndex = index;
     });
+
+    if (index == 1) {
+      UserProfileService().loadUserProfile();
+    }
   }
 
   Widget _buildIcon(int index, IconData? icon, String? assetPath) {
