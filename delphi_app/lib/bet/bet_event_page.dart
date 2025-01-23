@@ -290,7 +290,7 @@ class _BetEventPageState extends State<BetEventPage> {
                                                 width: 35,
                                                 child: Center(
                                                   child: Text(
-                                                    '${option.positivePrice} c',
+                                                    '${option.negativePrice} c',
                                                     textAlign: TextAlign.center,
                                                     style: TextStyle(
                                                       fontWeight:

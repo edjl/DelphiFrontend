@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import '../model/option.dart';
-// import 'package:google_fonts/google_fonts.dart';
 import '../model/user_profile.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import "option_service.dart";
