@@ -323,6 +323,37 @@ class _MySharesState extends State<MyShares> {
                 ),
               ),
             ),
+      actions: [
+        TextButton(
+          onPressed: () {
+            Navigator.of(context).pop();
+          },
+          style: ButtonStyle(
+            foregroundColor: WidgetStateProperty.resolveWith(
+              (states) => Colors.white,
+            ),
+            backgroundColor: WidgetStateProperty.all(Colors.blue),
+            padding: WidgetStateProperty.all(EdgeInsets.zero),
+            shape: WidgetStateProperty.all(
+              RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(3),
+                side: const BorderSide(
+                  color: Colors.black,
+                  width: 0.5,
+                ),
+              ),
+            ),
+          ),
+          child: const Text(
+            'Close',
+            style: TextStyle(
+              fontFamily: 'IBM Plex Sans',
+              fontWeight: FontWeight.w400,
+              fontSize: 15,
+            ),
+          ),
+        ),
+      ],
     );
   }
 }
