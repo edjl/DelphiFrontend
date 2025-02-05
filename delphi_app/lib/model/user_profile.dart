@@ -75,4 +75,20 @@ class UserProfile {
     this.profitMultiplier = 100;
     this.isLoggedIn = false;
   }
+
+  void makeBet(int amount) {
+    balance -= amount;
+    totalBets += 1;
+    currentBets += 1;
+    totalCreditsPlaying += amount;
+    totalCreditsBet += amount;
+  }
+
+  void sellShare(int originalAmount, int sellAmount, bool sellAll) {
+    balance += sellAmount;
+    if (sellAll) {
+      currentBets -= 1;
+    }
+    totalCreditsPlaying -= originalAmount;
+  }
 }

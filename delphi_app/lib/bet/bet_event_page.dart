@@ -7,6 +7,7 @@ import '../model/event.dart';
 import '../shared_services/abbreviated_numberstring_format.dart';
 import '../shared_services/date_string_format.dart';
 import 'bet_confirmation.dart';
+import 'my_shares.dart';
 
 class BetEventPage extends StatefulWidget {
   final Event event; // Add a final field to store the event
@@ -128,7 +129,13 @@ class _BetEventPageState extends State<BetEventPage> {
                                     top: 6.0, right: 12.0),
                                 child: ElevatedButton(
                                   onPressed: () {
-                                    print('My Shares pressed');
+                                    showDialog(
+                                        context: context,
+                                        barrierDismissible: true,
+                                        builder: (BuildContext context) {
+                                          return MyShares(
+                                              eventName: widget.event.name);
+                                        });
                                   },
                                   style: ElevatedButton.styleFrom(
                                     backgroundColor: Colors.blue,
