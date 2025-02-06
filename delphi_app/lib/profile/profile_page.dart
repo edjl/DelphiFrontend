@@ -1,3 +1,4 @@
+import 'package:delphi_app/authentication/signup_page.dart';
 import 'package:flutter/material.dart';
 import '../model/user_profile.dart';
 import '../authentication/login_page.dart';

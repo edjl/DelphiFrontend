@@ -59,6 +59,14 @@ class UserProfile {
     this.isLoggedIn = true;
   }
 
+  // Method to create a new user
+  void signup({
+    required String username
+  }) {
+    this.username = username;
+    this.isLoggedIn = true;
+  }
+
   // Method to log out the user.
   void logOut() {
     this._userId.value = -1;
