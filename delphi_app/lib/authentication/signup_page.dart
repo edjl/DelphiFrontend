@@ -77,27 +77,28 @@ class _SignUpPageState extends State<SignUpPage> {
     final String email = emailController.text;
     final String password = passwordController.text;
 
-    var response = await AuthenticationService.login(email, password);
+    var response =
+        await AuthenticationService.signup(username, email, password);
 
     setState(() {
       _isLoading = false;
     });
 
     if (response != null) {
-      // found duplicate
+      if (response.success) {
+        ScaffoldMessenger.of(context)
+            .showSnackBar(SnackBar(content: Text('Signup successful!')));
+        Navigator.pop(context);
+      } else {
+        setState(() {
+          _errorMessage = response.result;
+        });
+      }
+    } else {
       setState(() {
-        _errorMessage = 'An account with this email and password already exists. Please login.';
+        _errorMessage = 'Connection error.';
       });
     }
-    else {
-      setState(() {
-        _errorMessage = 'New account, creating account.';
-      });
-    }
-  }
-
-  _login(){
-    return LoginPage();
   }
 
   @override
@@ -148,15 +149,6 @@ class _SignUpPageState extends State<SignUpPage> {
                 _errorMessage,
                 style: TextStyle(color: Colors.red),
               ),
-            SizedBox(height: 20),
-            Text(
-              'Already a Member?',
-              style: TextStyle(color:Colors.black),
-            ),
-            SizedBox(height: 20),
-            ElevatedButton(
-              onPressed: _signup,
-              child: Text('Login'))
           ],
         ),
       ),

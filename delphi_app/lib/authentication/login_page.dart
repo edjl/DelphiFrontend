@@ -19,9 +19,13 @@ class _LoginPageState extends State<LoginPage> {
   bool _isLoading = false;
   String _errorMessage = '';
 
-  _signup(){
-    return SignUpPage();
+  _signup() {
+    Navigator.push(
+      context,
+      MaterialPageRoute(builder: (context) => SignUpPage()),
+    );
   }
+
   // Function to fetch user profile after login and update Singleton
   Future<void> _fetchUserProfile(int userId) async {
     try {
@@ -88,8 +92,8 @@ class _LoginPageState extends State<LoginPage> {
 
     if (response != null) {
       // Successfully logged in
-      ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(content: Text('Login successful! ${response.userId}')));
+      ScaffoldMessenger.of(context)
+          .showSnackBar(SnackBar(content: Text('Login successful!')));
 
       // Fetch the user profile data after successful login
       _fetchUserProfile(response.userId);
@@ -128,6 +132,12 @@ class _LoginPageState extends State<LoginPage> {
                 border: OutlineInputBorder(),
               ),
             ),
+            SizedBox(height: 10),
+            if (_errorMessage.isNotEmpty)
+              Text(
+                _errorMessage,
+                style: TextStyle(color: Colors.red),
+              ),
             SizedBox(height: 20),
             _isLoading
                 ? CircularProgressIndicator()
@@ -138,18 +148,12 @@ class _LoginPageState extends State<LoginPage> {
             SizedBox(height: 20),
             Text(
               'New Member?',
-              style: TextStyle(color:Colors.black),
+              style: TextStyle(color: Colors.black),
             ),
             ElevatedButton(
               onPressed: _signup,
               child: Text('Sign Up'),
             ),
-            SizedBox(height: 10),
-            if (_errorMessage.isNotEmpty)
-              Text(
-                _errorMessage,
-                style: TextStyle(color: Colors.red),
-              ),
           ],
         ),
       ),
@@ -158,4 +162,4 @@ class _LoginPageState extends State<LoginPage> {
 }
 
 // TODO: add button saying "New User? Sign Up
-// 
+//
