@@ -25,3 +25,5 @@ class AuthenticationService {
     }
   }
 }
+
+// TODO: create a new user with signup notification

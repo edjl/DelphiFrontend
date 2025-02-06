@@ -1,3 +1,4 @@
+import 'package:delphi_app/authentication/signup_page.dart';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http; // Import the http package
 import 'dart:convert'; // For JSON decoding
@@ -5,6 +6,7 @@ import 'authentication_service.dart'; // Assuming you have the AuthenticationSer
 import '../model/login_response.dart'; // Assuming you have the LoginResponse model
 import '../model/user_profile.dart'; // Import UserProfile singleton
 import '../profile/user_profile_service.dart';
+import '../authentication/signup_page.dart';
 
 class LoginPage extends StatefulWidget {
   @override
@@ -17,6 +19,9 @@ class _LoginPageState extends State<LoginPage> {
   bool _isLoading = false;
   String _errorMessage = '';
 
+  _signup(){
+    return SignUpPage();
+  }
   // Function to fetch user profile after login and update Singleton
   Future<void> _fetchUserProfile(int userId) async {
     try {
@@ -130,6 +135,15 @@ class _LoginPageState extends State<LoginPage> {
                     onPressed: _login,
                     child: Text('Login'),
                   ),
+            SizedBox(height: 20),
+            Text(
+              'New Member?',
+              style: TextStyle(color:Colors.black),
+            ),
+            ElevatedButton(
+              onPressed: _signup,
+              child: Text('Sign Up'),
+            ),
             SizedBox(height: 10),
             if (_errorMessage.isNotEmpty)
               Text(
@@ -142,3 +156,6 @@ class _LoginPageState extends State<LoginPage> {
     );
   }
 }
+
+// TODO: add button saying "New User? Sign Up
+// 
