@@ -59,46 +59,55 @@ class _SkeletonPageState extends State<SkeletonPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: Center(
-        child: _widgetOptions.elementAt(_selectedIndex),
-      ),
-      bottomNavigationBar: BottomNavigationBar(
-        items: <BottomNavigationBarItem>[
-          BottomNavigationBarItem(
-            icon: _buildIcon(0, Icons.store, null),
-            label: 'Store',
-            backgroundColor: GraphicsConstants.lightColorTheme,
+        body: Center(
+          child: _widgetOptions.elementAt(_selectedIndex),
+        ),
+        bottomNavigationBar: Container(
+          decoration: const BoxDecoration(
+            border: Border(
+              top: BorderSide(
+                color: Colors.black,
+                width: 1.0,
+              ),
+            ),
           ),
-          BottomNavigationBarItem(
-            icon: _buildIcon(1, Icons.person, null),
-            label: 'Profile',
-            backgroundColor: GraphicsConstants.lightColorTheme,
+          child: BottomNavigationBar(
+            items: <BottomNavigationBarItem>[
+              BottomNavigationBarItem(
+                icon: _buildIcon(0, Icons.store, null),
+                label: 'Store',
+                backgroundColor: GraphicsConstants.lightColorTheme,
+              ),
+              BottomNavigationBarItem(
+                icon: _buildIcon(1, Icons.person, null),
+                label: 'Profile',
+                backgroundColor: GraphicsConstants.lightColorTheme,
+              ),
+              BottomNavigationBarItem(
+                icon: _buildIcon(2, null, 'images/icons8-chip-100.png'),
+                label: 'Bet',
+                backgroundColor: GraphicsConstants.lightColorTheme,
+              ),
+              BottomNavigationBarItem(
+                icon: _buildIcon(3, Icons.folder, null),
+                label: 'Shares',
+                backgroundColor: GraphicsConstants.lightColorTheme,
+              ),
+              BottomNavigationBarItem(
+                icon: _buildIcon(4, Icons.leaderboard, null),
+                label: 'Rankings',
+                backgroundColor: GraphicsConstants.lightColorTheme,
+              ),
+            ],
+            currentIndex: _selectedIndex,
+            selectedItemColor: GraphicsConstants
+                .colorTheme, // Color of the label of the selected item
+            unselectedItemColor:
+                Colors.black, // Color of the label of unselected items
+            showSelectedLabels: true,
+            showUnselectedLabels: true,
+            onTap: _onItemTapped,
           ),
-          BottomNavigationBarItem(
-            icon: _buildIcon(2, null, 'images/icons8-chip-100.png'),
-            label: 'Bet',
-            backgroundColor: GraphicsConstants.lightColorTheme,
-          ),
-          BottomNavigationBarItem(
-            icon: _buildIcon(3, Icons.folder, null),
-            label: 'Shares',
-            backgroundColor: GraphicsConstants.lightColorTheme,
-          ),
-          BottomNavigationBarItem(
-            icon: _buildIcon(4, Icons.leaderboard, null),
-            label: 'Rankings',
-            backgroundColor: GraphicsConstants.lightColorTheme,
-          ),
-        ],
-        currentIndex: _selectedIndex,
-        selectedItemColor: GraphicsConstants
-            .colorTheme, // Color of the label of the selected item
-        unselectedItemColor:
-            Colors.black, // Color of the label of unselected items
-        showSelectedLabels: true,
-        showUnselectedLabels: true,
-        onTap: _onItemTapped,
-      ),
-    );
+        ));
   }
 }

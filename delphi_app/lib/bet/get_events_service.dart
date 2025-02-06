@@ -1,7 +1,6 @@
 import 'dart:convert';
 import 'package:http/http.dart' as http;
 import '../model/event.dart';
-import '../model/user_profile.dart';
 
 class GetEventsService {
   static Future<List<Event>> getEvents(int? userId, List<String>? categories,
