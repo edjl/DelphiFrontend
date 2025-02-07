@@ -77,6 +77,18 @@ class _SignUpPageState extends State<SignUpPage> {
     final String email = emailController.text;
     final String password = passwordController.text;
 
+    if (username.isEmpty || email.isEmpty || password.isEmpty) {
+      _isLoading = false;
+      if (username.isEmpty) {
+        _errorMessage = 'Enter a username';
+      } else if (email.isEmpty) {
+        _errorMessage = 'Enter an email';
+      } else if (password.isEmpty) {
+        _errorMessage = 'Enter a password';
+      }
+      return;
+    }
+
     var response =
         await AuthenticationService.signup(username, email, password);
 
@@ -86,8 +98,13 @@ class _SignUpPageState extends State<SignUpPage> {
 
     if (response != null) {
       if (response.success) {
-        ScaffoldMessenger.of(context)
-            .showSnackBar(SnackBar(content: Text('Signup successful!')));
+        ScaffoldMessenger.of(context).showSnackBar(
+          const SnackBar(
+            content: Text('Signup successful!'),
+            backgroundColor: Colors.green,
+            duration: Duration(seconds: 2),
+          ),
+        );
         Navigator.pop(context);
       } else {
         setState(() {
@@ -96,7 +113,7 @@ class _SignUpPageState extends State<SignUpPage> {
       }
     } else {
       setState(() {
-        _errorMessage = 'Connection error.';
+        _errorMessage = 'Connection error';
       });
     }
   }
@@ -104,54 +121,90 @@ class _SignUpPageState extends State<SignUpPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: Text('Sign Up'),
-      ),
-      body: Padding(
-        padding: const EdgeInsets.all(16.0),
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: <Widget>[
-            TextField(
-              controller: usernameController,
-              decoration: InputDecoration(
-                labelText: 'Username',
-                border: OutlineInputBorder(),
-              ),
+        appBar: AppBar(
+          backgroundColor: Colors.white,
+          title: const Text(
+            'Sign Up',
+            style: TextStyle(
+              fontFamily: 'IBM Plex Sans',
+              fontSize: 32,
+              fontWeight: FontWeight.w600,
             ),
-            SizedBox(height: 20),
-            TextField(
-              controller: emailController,
-              decoration: InputDecoration(
-                labelText: 'Email',
-                border: OutlineInputBorder(),
-              ),
-            ),
-            SizedBox(height: 20),
-            TextField(
-              controller: passwordController,
-              obscureText: true,
-              decoration: InputDecoration(
-                labelText: 'Password',
-                border: OutlineInputBorder(),
-              ),
-            ),
-            SizedBox(height: 20),
-            _isLoading
-                ? CircularProgressIndicator()
-                : ElevatedButton(
-                    onPressed: _signup,
-                    child: Text('Sign Up'),
-                  ),
-            SizedBox(height: 10),
-            if (_errorMessage.isNotEmpty)
-              Text(
-                _errorMessage,
-                style: TextStyle(color: Colors.red),
-              ),
-          ],
+            textAlign: TextAlign.center,
+            maxLines: 3,
+            overflow: TextOverflow.visible,
+            softWrap: true,
+          ),
         ),
-      ),
-    );
+        body: Container(
+          padding: const EdgeInsets.only(
+              left: 16.0,
+              right: 16.0,
+              top: 16.0,
+              bottom: 16.0), // Padding inside the container
+          color: Colors.white, // Set background color to white
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: <Widget>[
+              TextField(
+                controller: usernameController,
+                maxLength: 50,
+                decoration: const InputDecoration(
+                  labelText: 'Username',
+                  border: OutlineInputBorder(),
+                ),
+              ),
+              const SizedBox(height: 5),
+              TextField(
+                controller: emailController,
+                maxLength: 50,
+                decoration: const InputDecoration(
+                  labelText: 'Email',
+                  border: OutlineInputBorder(),
+                ),
+              ),
+              const SizedBox(height: 5),
+              TextField(
+                controller: passwordController,
+                maxLength: 50,
+                obscureText: true,
+                decoration: const InputDecoration(
+                  labelText: 'Password',
+                  border: OutlineInputBorder(),
+                ),
+              ),
+              const SizedBox(height: 5),
+              _isLoading
+                  ? const CircularProgressIndicator()
+                  : ElevatedButton(
+                      onPressed: _signup,
+                      style: ElevatedButton.styleFrom(
+                        backgroundColor: Colors.blue,
+                        foregroundColor: Colors.white,
+                        padding: const EdgeInsets.symmetric(
+                            horizontal: 36, vertical: 13),
+                        textStyle: const TextStyle(
+                          fontSize: 18,
+                          fontFamily: 'IBM Plex Sans',
+                          fontWeight: FontWeight.w500,
+                        ),
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(5),
+                          side:
+                              const BorderSide(color: Colors.black, width: 1.5),
+                        ),
+                      ),
+                      child: const Text('Sign Up'),
+                    ),
+              const SizedBox(height: 10),
+              if (_errorMessage.isNotEmpty)
+                Text(
+                  _errorMessage,
+                  style: const TextStyle(color: Colors.red),
+                ),
+              const SizedBox(height: 50),
+            ],
+          ),
+        ));
   }
 }

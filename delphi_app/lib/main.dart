@@ -1,9 +1,18 @@
 import 'package:flutter/material.dart';
 import 'skeleton_page/skeleton_page.dart';
 import 'profile/user_profile_service.dart';
+import 'package:flutter/services.dart';
 
 void main() {
-  runApp(const DelphiApp());
+  WidgetsFlutterBinding.ensureInitialized();
+
+  // Lock orientation to portrait mode
+  SystemChrome.setPreferredOrientations([
+    DeviceOrientation.portraitUp, // Normal portrait
+    DeviceOrientation.portraitDown, // Upside-down portrait (optional)
+  ]).then((_) {
+    runApp(const DelphiApp());
+  });
 }
 
 class DelphiApp extends StatelessWidget {
@@ -29,7 +38,6 @@ class UserProfileLoader extends StatelessWidget {
     return FutureBuilder(
       future: UserProfileService().loadUserProfile(),
       builder: (context, snapshot) {
-        // Show a loading spinner while waiting for the data to load
         if (snapshot.connectionState == ConnectionState.waiting) {
           return const Scaffold(
             body: Center(
@@ -38,7 +46,6 @@ class UserProfileLoader extends StatelessWidget {
           );
         }
 
-        // After the data is loaded, navigate to the SkeletonPage (or any other page)
         if (snapshot.hasError) {
           return const Scaffold(
             body: Center(
@@ -47,7 +54,7 @@ class UserProfileLoader extends StatelessWidget {
           );
         }
 
-        return const SkeletonPage(); // Home screen of your app after data is loaded
+        return const SkeletonPage();
       },
     );
   }
