@@ -8,6 +8,7 @@ import '../shared_services/abbreviated_numberstring_format.dart';
 import '../shared_services/date_string_format.dart';
 import 'bet_confirmation.dart';
 import 'my_shares.dart';
+import '../model/user_profile.dart';
 
 class BetEventPage extends StatefulWidget {
   final Event event; // Add a final field to store the event
@@ -128,15 +129,18 @@ class _BetEventPageState extends State<BetEventPage> {
                                 padding: const EdgeInsets.only(
                                     top: 6.0, right: 12.0),
                                 child: ElevatedButton(
-                                  onPressed: () {
-                                    showDialog(
-                                        context: context,
-                                        barrierDismissible: true,
-                                        builder: (BuildContext context) {
-                                          return MyShares(
-                                              eventName: widget.event.name);
-                                        });
-                                  },
+                                  onPressed: UserProfile().userId.value >= 0
+                                      ? () {
+                                          showDialog(
+                                            context: context,
+                                            barrierDismissible: true,
+                                            builder: (BuildContext context) {
+                                              return MyShares(
+                                                  eventName: widget.event.name);
+                                            },
+                                          );
+                                        }
+                                      : null,
                                   style: ElevatedButton.styleFrom(
                                     backgroundColor: Colors.blue,
                                     foregroundColor: Colors.white,
@@ -226,19 +230,26 @@ class _BetEventPageState extends State<BetEventPage> {
                                             SizedBox(width: 16),
                                             // Positive price button
                                             ElevatedButton(
-                                              onPressed: () {
-                                                showDialog(
-                                                    context: context,
-                                                    barrierDismissible: true,
-                                                    builder:
-                                                        (BuildContext context) {
-                                                      return BetConfirmation(
-                                                          option: option,
-                                                          eventName:
-                                                              widget.event.name,
-                                                          isBuyYes: true);
-                                                    });
-                                              },
+                                              onPressed: UserProfile()
+                                                          .userId
+                                                          .value >=
+                                                      0
+                                                  ? () {
+                                                      showDialog(
+                                                          context: context,
+                                                          barrierDismissible:
+                                                              true,
+                                                          builder: (BuildContext
+                                                              context) {
+                                                            return BetConfirmation(
+                                                                option: option,
+                                                                eventName:
+                                                                    widget.event
+                                                                        .name,
+                                                                isBuyYes: true);
+                                                          });
+                                                    }
+                                                  : null,
                                               style: ElevatedButton.styleFrom(
                                                 backgroundColor: Colors.green,
                                                 foregroundColor: Colors.white,
@@ -268,19 +279,27 @@ class _BetEventPageState extends State<BetEventPage> {
                                             ),
                                             SizedBox(width: 8),
                                             ElevatedButton(
-                                              onPressed: () {
-                                                showDialog(
-                                                    context: context,
-                                                    barrierDismissible: true,
-                                                    builder:
-                                                        (BuildContext context) {
-                                                      return BetConfirmation(
-                                                          option: option,
-                                                          eventName:
-                                                              widget.event.name,
-                                                          isBuyYes: false);
-                                                    });
-                                              },
+                                              onPressed: UserProfile()
+                                                          .userId
+                                                          .value >=
+                                                      0
+                                                  ? () {
+                                                      showDialog(
+                                                          context: context,
+                                                          barrierDismissible:
+                                                              true,
+                                                          builder: (BuildContext
+                                                              context) {
+                                                            return BetConfirmation(
+                                                                option: option,
+                                                                eventName:
+                                                                    widget.event
+                                                                        .name,
+                                                                isBuyYes:
+                                                                    false);
+                                                          });
+                                                    }
+                                                  : null,
                                               style: ElevatedButton.styleFrom(
                                                 backgroundColor: Colors.red,
                                                 foregroundColor: Colors.white,
