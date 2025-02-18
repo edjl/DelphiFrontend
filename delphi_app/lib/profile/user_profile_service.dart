@@ -61,7 +61,7 @@ class UserProfileService {
 
           UserProfile().username = user['username'];
           UserProfile().isAdmin = user['admin'] == 1;
-          UserProfile().balance = user['balance'];
+          UserProfile().balance.value = user['balance'];
           UserProfile().bankruptcyCount = user['bankruptcy_count'];
           UserProfile().totalBets = user['total_bets'];
           UserProfile().currentBets = user['curr_bets'];
