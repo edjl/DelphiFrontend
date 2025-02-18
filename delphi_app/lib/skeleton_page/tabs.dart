@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import '../profile/profile_page.dart';
 import '../bet/bet_main_page.dart';
+import '../leaderboard/leaderboard_main_page.dart';
 
 class StoreTab extends StatelessWidget {
   const StoreTab({super.key});
@@ -43,6 +44,6 @@ class LeaderboardTab extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return const Text('Leaderboard Tab, coming soon!');
+    return LeaderboardMainPage();
   }
 }

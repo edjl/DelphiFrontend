@@ -229,103 +229,143 @@ class _BetEventPageState extends State<BetEventPage> {
                                             ),
                                             SizedBox(width: 16),
                                             // Positive price button
-                                            ElevatedButton(
-                                              onPressed: UserProfile()
-                                                          .userId
-                                                          .value >=
-                                                      0
-                                                  ? () {
-                                                      showDialog(
-                                                          context: context,
-                                                          barrierDismissible:
-                                                              true,
-                                                          builder: (BuildContext
-                                                              context) {
-                                                            return BetConfirmation(
+                                            ValueListenableBuilder<int>(
+                                              valueListenable:
+                                                  UserProfile().balance,
+                                              builder: (context, balance, _) {
+                                                return ElevatedButton(
+                                                  onPressed: (UserProfile()
+                                                                  .userId
+                                                                  .value >=
+                                                              0 &&
+                                                          option.positivePrice <=
+                                                              balance)
+                                                      ? () async {
+                                                          await showDialog(
+                                                            context: context,
+                                                            barrierDismissible:
+                                                                true,
+                                                            builder:
+                                                                (BuildContext
+                                                                    context) {
+                                                              return BetConfirmation(
                                                                 option: option,
                                                                 eventName:
                                                                     widget.event
                                                                         .name,
-                                                                isBuyYes: true);
-                                                          });
-                                                    }
-                                                  : null,
-                                              style: ElevatedButton.styleFrom(
-                                                backgroundColor: Colors.green,
-                                                foregroundColor: Colors.white,
-                                                shape: RoundedRectangleBorder(
-                                                  borderRadius:
-                                                      BorderRadius.circular(3),
-                                                  side: BorderSide(
-                                                      color: Colors.black,
-                                                      width: 1),
-                                                ),
-                                                padding: EdgeInsets.zero,
-                                              ),
-                                              child: SizedBox(
-                                                width: 35,
-                                                child: Center(
-                                                  child: Text(
-                                                    '${option.positivePrice} c',
-                                                    textAlign: TextAlign.center,
-                                                    style: TextStyle(
-                                                      fontWeight:
-                                                          FontWeight.w600,
-                                                      fontSize: 16,
+                                                                isBuyYes: true,
+                                                              );
+                                                            },
+                                                          );
+                                                        }
+                                                      : null,
+                                                  style:
+                                                      ElevatedButton.styleFrom(
+                                                    backgroundColor:
+                                                        (option.positivePrice >
+                                                                balance)
+                                                            ? Colors.grey
+                                                            : Colors.green,
+                                                    foregroundColor:
+                                                        Colors.white,
+                                                    shape:
+                                                        RoundedRectangleBorder(
+                                                      borderRadius:
+                                                          BorderRadius.circular(
+                                                              3),
+                                                      side: BorderSide(
+                                                          color: Colors.black,
+                                                          width: 1),
+                                                    ),
+                                                    padding: EdgeInsets.zero,
+                                                  ),
+                                                  child: SizedBox(
+                                                    width: 35,
+                                                    child: Center(
+                                                      child: Text(
+                                                        '${option.positivePrice} c',
+                                                        textAlign:
+                                                            TextAlign.center,
+                                                        style: TextStyle(
+                                                          fontWeight:
+                                                              FontWeight.w600,
+                                                          fontSize: 16,
+                                                        ),
+                                                      ),
                                                     ),
                                                   ),
-                                                ),
-                                              ),
+                                                );
+                                              },
                                             ),
                                             SizedBox(width: 8),
-                                            ElevatedButton(
-                                              onPressed: UserProfile()
-                                                          .userId
-                                                          .value >=
-                                                      0
-                                                  ? () {
-                                                      showDialog(
-                                                          context: context,
-                                                          barrierDismissible:
-                                                              true,
-                                                          builder: (BuildContext
-                                                              context) {
-                                                            return BetConfirmation(
+                                            // Negative price button
+                                            ValueListenableBuilder<int>(
+                                              valueListenable:
+                                                  UserProfile().balance,
+                                              builder: (context, balance, _) {
+                                                return ElevatedButton(
+                                                  onPressed: (UserProfile()
+                                                                  .userId
+                                                                  .value >=
+                                                              0 &&
+                                                          option.negativePrice <=
+                                                              balance)
+                                                      ? () async {
+                                                          await showDialog(
+                                                            context: context,
+                                                            barrierDismissible:
+                                                                true,
+                                                            builder:
+                                                                (BuildContext
+                                                                    context) {
+                                                              return BetConfirmation(
                                                                 option: option,
                                                                 eventName:
                                                                     widget.event
                                                                         .name,
-                                                                isBuyYes:
-                                                                    false);
-                                                          });
-                                                    }
-                                                  : null,
-                                              style: ElevatedButton.styleFrom(
-                                                backgroundColor: Colors.red,
-                                                foregroundColor: Colors.white,
-                                                shape: RoundedRectangleBorder(
-                                                  borderRadius:
-                                                      BorderRadius.circular(3),
-                                                  side: BorderSide(
-                                                      color: Colors.black,
-                                                      width: 1),
-                                                ),
-                                                padding: EdgeInsets.zero,
-                                              ),
-                                              child: SizedBox(
-                                                width: 35,
-                                                child: Center(
-                                                  child: Text(
-                                                    '${option.negativePrice} c',
-                                                    textAlign: TextAlign.center,
-                                                    style: TextStyle(
-                                                      fontWeight:
-                                                          FontWeight.w600,
-                                                      fontSize: 16,
+                                                                isBuyYes: false,
+                                                              );
+                                                            },
+                                                          );
+                                                        }
+                                                      : null,
+                                                  style:
+                                                      ElevatedButton.styleFrom(
+                                                    backgroundColor:
+                                                        (option.negativePrice >
+                                                                balance)
+                                                            ? Colors.grey
+                                                            : Colors.red,
+                                                    foregroundColor:
+                                                        Colors.white,
+                                                    shape:
+                                                        RoundedRectangleBorder(
+                                                      borderRadius:
+                                                          BorderRadius.circular(
+                                                              3),
+                                                      side: BorderSide(
+                                                          color: Colors.black,
+                                                          width: 1),
+                                                    ),
+                                                    padding: EdgeInsets.zero,
+                                                  ),
+                                                  child: SizedBox(
+                                                    width: 35,
+                                                    child: Center(
+                                                      child: Text(
+                                                        '${option.negativePrice} c',
+                                                        textAlign:
+                                                            TextAlign.center,
+                                                        style: TextStyle(
+                                                          fontWeight:
+                                                              FontWeight.w600,
+                                                          fontSize: 16,
+                                                        ),
+                                                      ),
                                                     ),
                                                   ),
-                                                ),
-                                              ),
+                                                );
+                                              },
                                             ),
                                           ],
                                         ),
