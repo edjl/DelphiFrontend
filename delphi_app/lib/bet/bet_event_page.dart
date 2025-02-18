@@ -40,14 +40,17 @@ class _BetEventPageState extends State<BetEventPage> {
       body: CustomScrollView(
         slivers: [
           SliverAppBar(
-            backgroundColor: Colors.white,
+            backgroundColor:
+                Colors.white, // Set the background color for the app bar
             floating: false,
-            pinned: true, // This keeps the app bar visible when scrolling
+            pinned: true,
             flexibleSpace: FlexibleSpaceBar(
               title: null,
-              background: Padding(
+              background: Container(
+                color: Colors
+                    .white, // Set the background color to white for consistency
                 padding:
-                    const EdgeInsets.only(left: 40.0, right: 40.0, top: 50.0),
+                    const EdgeInsets.only(left: 40.0, right: 40.0, top: 25.0),
                 child: Align(
                   alignment: Alignment.center,
                   child: SingleChildScrollView(
@@ -58,7 +61,7 @@ class _BetEventPageState extends State<BetEventPage> {
                           titleText,
                           style: TextStyle(
                             fontFamily: 'IBM Plex Sans',
-                            fontSize: 32,
+                            fontSize: 22,
                             fontWeight: FontWeight.w600,
                           ),
                           textAlign: TextAlign.center,
