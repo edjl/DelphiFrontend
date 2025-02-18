@@ -30,7 +30,7 @@ class _BetConfirmationState extends State<BetConfirmation> {
         ? widget.option.positivePrice
         : widget.option.negativePrice;
     if (price <= 0) return 0;
-    return UserProfile().balance ~/ price;
+    return UserProfile().balance.value ~/ price;
   }
 
   @override
@@ -77,13 +77,7 @@ class _BetConfirmationState extends State<BetConfirmation> {
 
       if (!buySucceeded) {
         throw Exception();
-      } else {
-        int amountBet = optionAmount *
-            (widget.isBuyYes
-                ? widget.option.positivePrice
-                : widget.option.negativePrice);
-        UserProfile().makeBet(amountBet);
-      }
+      } else {}
       return true;
     } catch (e) {
       print("Error buying option: $e");
@@ -154,7 +148,9 @@ class _BetConfirmationState extends State<BetConfirmation> {
                       (int.tryParse(numberController.text) == null ||
                           int.parse(numberController.text) < 1 ||
                           int.parse(numberController.text) > maxAllowed))
-                  ? 'Please enter a value between 1 and $maxAllowed'
+                  ? (maxAllowed > 0
+                      ? 'Please enter a value between 1 and ${maxAllowed}'
+                      : 'Not enough credits')
                   : null,
             ),
             inputFormatters: <TextInputFormatter>[
@@ -204,8 +200,16 @@ class _BetConfirmationState extends State<BetConfirmation> {
                 onPressed: isBuyEnabled
                     ? () async {
                         int optionAmount = int.parse(numberController.text);
+
+                        int amountBet = optionAmount *
+                            (widget.isBuyYes
+                                ? widget.option.positivePrice
+                                : widget.option.negativePrice);
+                        UserProfile().makeBet(amountBet);
+
                         bool buySucceeded = await _buyOption(optionAmount);
                         if (!buySucceeded) {
+                          UserProfile().refundBet(amountBet);
                           _showFailureMessage(context);
                         }
                         if (mounted) {

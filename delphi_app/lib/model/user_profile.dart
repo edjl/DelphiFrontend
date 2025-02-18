@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import '../profile/user_profile_service.dart';
 
 class UserProfile {
   // Singleton pattern: Ensuring only one instance of UserProfile exists.
@@ -18,7 +19,7 @@ class UserProfile {
       _userId; // Exposing userId as a ValueNotifier
   String username = "DefaultUser";
   bool isAdmin = false;
-  int balance = 0;
+  ValueNotifier<int> balance = ValueNotifier<int>(0);
   int bankruptcyCount = 0;
   int totalBets = 0;
   int currentBets = 0;
@@ -47,7 +48,7 @@ class UserProfile {
     this._userId.value = userId; // Update the userId with ValueNotifier
     this.username = username;
     this.isAdmin = isAdmin;
-    this.balance = balance;
+    this.balance.value = balance;
     this.bankruptcyCount = bankruptcyCount;
     this.totalBets = totalBets;
     this.currentBets = currentBets;
@@ -60,9 +61,7 @@ class UserProfile {
   }
 
   // Method to create a new user
-  void signup({
-    required String username
-  }) {
+  void signup({required String username}) {
     this.username = username;
     this.isLoggedIn = true;
   }
@@ -72,7 +71,7 @@ class UserProfile {
     this._userId.value = -1;
     this.username = "DefaultUser";
     this.isAdmin = false;
-    this.balance = 0;
+    this.balance.value = 0;
     this.bankruptcyCount = 0;
     this.totalBets = 0;
     this.currentBets = 0;
@@ -85,18 +84,29 @@ class UserProfile {
   }
 
   void makeBet(int amount) {
-    balance -= amount;
+    balance.value -= amount;
     totalBets += 1;
     currentBets += 1;
     totalCreditsPlaying += amount;
     totalCreditsBet += amount;
+    UserProfileService().saveUserProfile();
+  }
+
+  void refundBet(int amount) {
+    balance.value += amount;
+    totalBets -= 1;
+    currentBets -= 1;
+    totalCreditsPlaying -= amount;
+    totalCreditsBet -= amount;
+    UserProfileService().saveUserProfile();
   }
 
   void sellShare(int originalAmount, int sellAmount, bool sellAll) {
-    balance += sellAmount;
+    balance.value += sellAmount;
     if (sellAll) {
       currentBets -= 1;
     }
     totalCreditsPlaying -= originalAmount;
+    UserProfileService().saveUserProfile();
   }
 }

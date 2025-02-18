@@ -48,7 +48,7 @@ class ProfilePage extends StatelessWidget {
                             ),
                             const SizedBox(height: 20),
                             Text(
-                              'Balance: ${userProfile.balance} credits',
+                              'Balance: ${userProfile.balance.value} credits',
                               style: const TextStyle(
                                 fontSize: 16,
                                 fontFamily: 'IBM Plex Sans',

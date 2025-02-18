@@ -11,7 +11,7 @@ class UserProfileService {
     if (userId != -1) {
       UserProfile().userId.value = userId;
       UserProfile().username = prefs.getString('username') ?? "DefaultUser";
-      UserProfile().balance = prefs.getInt('balance') ?? 0;
+      UserProfile().balance.value = prefs.getInt('balance') ?? 0;
       UserProfile().isAdmin = prefs.getBool('isAdmin') ?? false;
       UserProfile().bankruptcyCount = prefs.getInt('bankruptcyCount') ?? 0;
       UserProfile().totalBets = prefs.getInt('totalBets') ?? 0;
@@ -34,7 +34,7 @@ class UserProfileService {
     prefs.setInt('userId', UserProfile().userId.value);
     prefs.setString('username', UserProfile().username);
     prefs.setBool('isAdmin', UserProfile().isAdmin);
-    prefs.setInt('balance', UserProfile().balance);
+    prefs.setInt('balance', UserProfile().balance.value);
     prefs.setInt('bankruptcyCount', UserProfile().bankruptcyCount);
     prefs.setInt('totalBets', UserProfile().totalBets);
     prefs.setInt('currentBets', UserProfile().currentBets);
