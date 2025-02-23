@@ -1,81 +1,69 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import '../model/option.dart';
+import '../model/share.dart';
 import '../model/user_profile.dart';
 import 'package:cached_network_image/cached_network_image.dart';
-import "option_service.dart";
+import "../bet/option_service.dart";
 
-class BetConfirmation extends StatefulWidget {
-  final Option option;
-  final bool isBuyYes;
-  final String eventName;
+class SellConfirmation extends StatefulWidget {
+  final Share share;
 
-  const BetConfirmation({
-    required this.option,
-    required this.eventName,
-    required this.isBuyYes,
+  const SellConfirmation({
+    required this.share,
     Key? key,
   }) : super(key: key);
 
   @override
-  _BetConfirmationState createState() => _BetConfirmationState();
+  _SellConfirmationState createState() => _SellConfirmationState();
 }
 
-class _BetConfirmationState extends State<BetConfirmation> {
+class _SellConfirmationState extends State<SellConfirmation> {
   final TextEditingController numberController = TextEditingController();
-  bool isBuyEnabled = true;
-
-  int get maxAllowed {
-    int price = widget.isBuyYes
-        ? widget.option.positivePrice
-        : widget.option.negativePrice;
-    if (price <= 0) return 0;
-    return UserProfile().balance.value ~/ price;
-  }
+  bool isSellEnabled = true;
 
   @override
   void initState() {
     super.initState();
-    numberController.text = '${(maxAllowed < 50) ? maxAllowed : 50}';
+    numberController.text = '${widget.share.shares.abs()}';
     numberController.addListener(_validateInput);
   }
 
   @override
   void dispose() {
     numberController.removeListener(_validateInput);
-    numberController.dispose();
     super.dispose();
   }
 
   void _validateInput() {
     setState(() {
       int? enteredValue = int.tryParse(numberController.text);
-      isBuyEnabled = enteredValue != null &&
+      isSellEnabled = enteredValue != null &&
           enteredValue >= 1 &&
-          enteredValue <= maxAllowed;
+          enteredValue <= widget.share.shares.abs();
     });
   }
 
   void _showFailureMessage(BuildContext context) {
     ScaffoldMessenger.of(context).showSnackBar(
       const SnackBar(
-        content: Text('Purchase failed. Please try again later.'),
+        content: Text('Sale failed. Please try again later.'),
         backgroundColor: Colors.red,
         duration: Duration(seconds: 2),
       ),
     );
   }
 
-  Future<bool> _buyOption(int optionAmount) async {
+  Future<bool> _sellShare(int optionAmount) async {
     try {
-      final buySucceeded = await OptionService.buyOption(
+      final sellSucceeded = await OptionService.sellShares(
         (UserProfile().userId.value == -1) ? null : UserProfile().userId.value,
-        widget.eventName,
-        widget.option.title,
+        widget.share.eventName,
+        widget.share.optionName,
+        widget.share.purchaseDateTime,
         optionAmount,
       );
 
-      if (!buySucceeded) {
+      if (!sellSucceeded) {
         throw Exception();
       } else {}
       return true;
@@ -92,7 +80,7 @@ class _BetConfirmationState extends State<BetConfirmation> {
       title: Align(
         alignment: Alignment.center,
         child: Text(
-          'How many shares of ${widget.option.title} to buy?',
+          '${widget.share.eventName}',
           textAlign: TextAlign.center,
           style: const TextStyle(
             fontFamily: 'IBM Plex Sans',
@@ -108,7 +96,7 @@ class _BetConfirmationState extends State<BetConfirmation> {
             mainAxisSize: MainAxisSize.min,
             children: [
               CachedNetworkImage(
-                imageUrl: widget.option.imageLink ??
+                imageUrl: widget.share.imageLink ??
                     "https://i.imgur.com/dRk6nBk.jpeg",
                 width: 29,
                 height: 29,
@@ -117,7 +105,7 @@ class _BetConfirmationState extends State<BetConfirmation> {
               const SizedBox(width: 8),
               Expanded(
                 child: Text(
-                  widget.option.title,
+                  widget.share.optionName,
                   style: const TextStyle(
                     fontFamily: 'IBM Plex Sans',
                     fontSize: 15,
@@ -125,14 +113,18 @@ class _BetConfirmationState extends State<BetConfirmation> {
                   overflow: TextOverflow.ellipsis,
                 ),
               ),
-              // const Spacer(),
+            ],
+          ),
+          Row(
+            children: [
+              const Spacer(),
               Text(
-                "${widget.isBuyYes ? "YES" : "NO"} @ ${(widget.isBuyYes ? widget.option.positivePrice : widget.option.negativePrice)}",
+                "${widget.share.shares.abs()} ${widget.share.shares > 0 ? "YES" : "NO"} shares @ ${widget.share.price} c",
                 style: TextStyle(
                   fontFamily: 'IBM Plex Sans',
                   fontSize: 15,
                   fontWeight: FontWeight.w500,
-                  color: widget.isBuyYes ? Colors.green : Colors.red,
+                  color: widget.share.shares > 0 ? Colors.green : Colors.red,
                 ),
               ),
             ],
@@ -143,13 +135,14 @@ class _BetConfirmationState extends State<BetConfirmation> {
             controller: numberController,
             decoration: InputDecoration(
               border: const OutlineInputBorder(),
-              labelText: 'Amount (Max: $maxAllowed)',
+              labelText: 'Amount (Max: ${widget.share.shares.abs()})',
               errorText: (numberController.text.isNotEmpty &&
                       (int.tryParse(numberController.text) == null ||
                           int.parse(numberController.text) < 1 ||
-                          int.parse(numberController.text) > maxAllowed))
-                  ? (maxAllowed > 0
-                      ? 'Please enter a value between 1 and ${maxAllowed}'
+                          int.parse(numberController.text) >
+                              widget.share.shares.abs()))
+                  ? (widget.share.shares.abs() > 0
+                      ? 'Please enter a value between 1 and ${widget.share.shares.abs()}'
                       : 'Not enough credits')
                   : null,
             ),
@@ -161,15 +154,14 @@ class _BetConfirmationState extends State<BetConfirmation> {
                 int enteredValue = int.tryParse(value) ?? 0;
                 if (enteredValue < 1) {
                   numberController.text = '1';
-                } else if (enteredValue > maxAllowed) {
-                  numberController.text = maxAllowed.toString();
+                } else if (enteredValue > widget.share.shares.abs()) {
+                  numberController.text = widget.share.shares.abs().toString();
                 }
               }
             },
             onTap: () {
               if (numberController.text.isEmpty) {
-                numberController.text =
-                    '${(maxAllowed < 50) ? maxAllowed : 50}';
+                numberController.text = widget.share.shares.abs().toString();
               }
             },
           ),
@@ -197,29 +189,31 @@ class _BetConfirmationState extends State<BetConfirmation> {
               ),
               const SizedBox(width: 8),
               ElevatedButton(
-                onPressed: isBuyEnabled
+                onPressed: isSellEnabled
                     ? () async {
                         int optionAmount = int.parse(numberController.text);
 
-                        int amountBet = optionAmount *
-                            (widget.isBuyYes
-                                ? widget.option.positivePrice
-                                : widget.option.negativePrice);
-                        UserProfile().makeBet(amountBet);
+                        int amountGain =
+                            optionAmount * widget.share.currentPrice;
+                        int initialAmount = optionAmount * widget.share.price;
+                        UserProfile().sellShare(initialAmount, amountGain,
+                            optionAmount == widget.share.shares.abs());
 
-                        bool buySucceeded = await _buyOption(
-                            widget.isBuyYes ? optionAmount : -1 * optionAmount);
-                        if (!buySucceeded) {
-                          UserProfile().refundBet(amountBet);
+                        bool sellSucceeded = await _sellShare(optionAmount);
+                        if (!sellSucceeded) {
+                          UserProfile().refundSale(initialAmount, amountGain,
+                              optionAmount == widget.share.shares.abs());
                           _showFailureMessage(context);
+                          Navigator.pop(context, false);
                         }
                         if (mounted) {
-                          Navigator.of(context).pop();
+                          Navigator.pop(context, true);
                         }
                       }
                     : null,
                 style: ElevatedButton.styleFrom(
-                  backgroundColor: widget.isBuyYes ? Colors.green : Colors.red,
+                  backgroundColor:
+                      widget.share.shares < 0 ? Colors.green : Colors.red,
                   foregroundColor: Colors.white,
                   shape: RoundedRectangleBorder(
                     borderRadius: BorderRadius.circular(3),
@@ -231,7 +225,7 @@ class _BetConfirmationState extends State<BetConfirmation> {
                   width: 35,
                   child: Center(
                     child: Text(
-                      'Buy',
+                      'Sell',
                       textAlign: TextAlign.center,
                       style: TextStyle(
                         fontWeight: FontWeight.w600,

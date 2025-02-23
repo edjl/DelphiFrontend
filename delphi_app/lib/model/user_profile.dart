@@ -109,4 +109,13 @@ class UserProfile {
     totalCreditsPlaying -= originalAmount;
     UserProfileService().saveUserProfile();
   }
+
+  void refundSale(int originalAmount, int sellAmount, bool sellAll) {
+    balance.value -= sellAmount;
+    if (sellAll) {
+      currentBets += 1;
+    }
+    totalCreditsPlaying += originalAmount;
+    UserProfileService().saveUserProfile();
+  }
 }

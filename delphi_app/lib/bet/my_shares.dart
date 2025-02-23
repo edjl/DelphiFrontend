@@ -92,7 +92,7 @@ class _MySharesState extends State<MyShares> {
     final share = shares[index];
     final shareCount = int.tryParse(quantityController.text) ?? 0;
 
-    if (shareCount < 1 || shareCount > share.shares) {
+    if (shareCount < 1 || shareCount > share.shares.abs()) {
       _showFailureMessage(context);
       return;
     }
@@ -101,12 +101,16 @@ class _MySharesState extends State<MyShares> {
 
     if (success) {
       setState(() {
-        if (shareCount == share.shares) {
+        if (shareCount == share.shares.abs()) {
           shares.removeAt(index);
-          UserProfile().sellShare(shareCount * share.price,
-              shareCount * share.currentPrice, shareCount == share.shares);
-        } else {
+          UserProfile().sellShare(
+              shareCount * share.price,
+              shareCount * share.currentPrice,
+              shareCount == share.shares.abs());
+        } else if (share.shares > 0) {
           share.shares -= shareCount;
+        } else {
+          share.shares += shareCount;
         }
       });
     } else {
