@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import '../profile/profile_page.dart';
 import '../bet/bet_main_page.dart';
+import '../shares/shares_main_page.dart';
 import '../leaderboard/leaderboard_main_page.dart';
 
 class StoreTab extends StatelessWidget {
@@ -35,7 +36,7 @@ class SharesTab extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return const Text('Shares Tab, coming soon!');
+    return SharesMainPage();
   }
 }
 
