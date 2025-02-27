@@ -97,16 +97,15 @@ class _MySharesState extends State<MyShares> {
       return;
     }
 
+    UserProfile().sellShare(shareCount * share.price,
+        shareCount * share.currentPrice, shareCount == share.shares.abs());
+
     final success = await _sellShares(shareCount, share);
 
     if (success) {
       setState(() {
         if (shareCount == share.shares.abs()) {
           shares.removeAt(index);
-          UserProfile().sellShare(
-              shareCount * share.price,
-              shareCount * share.currentPrice,
-              shareCount == share.shares.abs());
         } else if (share.shares > 0) {
           share.shares -= shareCount;
         } else {
@@ -114,6 +113,8 @@ class _MySharesState extends State<MyShares> {
         }
       });
     } else {
+      UserProfile().refundSale(shareCount * share.price,
+          shareCount * share.currentPrice, shareCount == share.shares.abs());
       _showFailureMessage(context);
     }
     setState(() {
