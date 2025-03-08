@@ -4,6 +4,7 @@ import '../model/user_profile.dart';
 import '../authentication/login_page.dart';
 import 'user_profile_service.dart';
 import '../shared_views/app_bar.dart';
+import '../shared_services/abbreviated_numberstring_format.dart';
 
 class ProfilePage extends StatelessWidget {
   const ProfilePage({super.key});
@@ -48,7 +49,7 @@ class ProfilePage extends StatelessWidget {
                             ),
                             const SizedBox(height: 20),
                             Text(
-                              'Balance: ${userProfile.balance.value} credits',
+                              'Balance: ${AbbreviatedNumberstringFormat.formatWithCommas(userProfile.balance.value)} credits',
                               style: const TextStyle(
                                 fontSize: 16,
                                 fontFamily: 'IBM Plex Sans',
@@ -65,6 +66,14 @@ class ProfilePage extends StatelessWidget {
                               ),
                             ),
                             Text(
+                              'Current Bets (max 30): ${userProfile.currentBets}',
+                              style: const TextStyle(
+                                fontSize: 16,
+                                fontFamily: 'IBM Plex Sans',
+                                fontWeight: FontWeight.w400,
+                              ),
+                            ),
+                            Text(
                               'Bankruptcy Count: ${userProfile.bankruptcyCount}',
                               style: const TextStyle(
                                 fontSize: 16,
@@ -74,7 +83,7 @@ class ProfilePage extends StatelessWidget {
                             ),
                             const SizedBox(height: 15),
                             Text(
-                              'Credits Playing: ${userProfile.totalCreditsPlaying} credits',
+                              'Credits Playing: ${AbbreviatedNumberstringFormat.formatWithCommas(userProfile.totalCreditsPlaying)} credits',
                               style: const TextStyle(
                                 fontSize: 16,
                                 fontFamily: 'IBM Plex Sans',
@@ -82,7 +91,7 @@ class ProfilePage extends StatelessWidget {
                               ),
                             ),
                             Text(
-                              'Credits Bet: ${userProfile.totalCreditsBet} credits',
+                              'Credits Bet: ${AbbreviatedNumberstringFormat.formatWithCommas(userProfile.totalCreditsBet)} credits',
                               style: const TextStyle(
                                 fontSize: 16,
                                 fontFamily: 'IBM Plex Sans',
@@ -90,7 +99,7 @@ class ProfilePage extends StatelessWidget {
                               ),
                             ),
                             Text(
-                              'Credits Won: ${userProfile.totalCreditsWon} credits',
+                              'Credits Won: ${AbbreviatedNumberstringFormat.formatWithCommas(userProfile.totalCreditsWon)} credits',
                               style: const TextStyle(
                                 fontSize: 16,
                                 fontFamily: 'IBM Plex Sans',

@@ -1,4 +1,18 @@
 class AbbreviatedNumberstringFormat {
+  static String formatWithCommas(int number) {
+    String str = number.toString();
+    int length = str.length;
+    List<String> result = [];
+    
+    for (int i = 0; i < length; i++) {
+      result.add(str[length - i - 1]);
+      if ((i + 1) % 3 == 0 && i != length - 1) {
+        result.add(',');
+      }
+    }
+    return result.reversed.join('');
+  }
+
   static String formatMarketCap(int marketCap) {
     if (marketCap < 1000) {
       return marketCap.toString();

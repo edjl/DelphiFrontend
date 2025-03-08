@@ -236,7 +236,6 @@ class _BetEventPageState extends State<BetEventPage> {
                                               valueListenable:
                                                   UserProfile().balance,
                                               builder: (context, balance, _) {
-                                                print("Balance: ${balance}");
                                                 return ElevatedButton(
                                                   onPressed: (UserProfile()
                                                                   .userId
@@ -290,10 +289,14 @@ class _BetEventPageState extends State<BetEventPage> {
                                                         '${option.positivePrice} c',
                                                         textAlign:
                                                             TextAlign.center,
-                                                        style: const TextStyle(
+                                                        style: TextStyle(
                                                           fontWeight:
                                                               FontWeight.w600,
-                                                          fontSize: 16,
+                                                          fontSize:
+                                                              (option.positivePrice ==
+                                                                      100)
+                                                                  ? 13
+                                                                  : 15,
                                                         ),
                                                       ),
                                                     ),
@@ -363,7 +366,11 @@ class _BetEventPageState extends State<BetEventPage> {
                                                         style: TextStyle(
                                                           fontWeight:
                                                               FontWeight.w600,
-                                                          fontSize: 16,
+                                                          fontSize:
+                                                              (option.negativePrice ==
+                                                                      100)
+                                                                  ? 13
+                                                                  : 15,
                                                         ),
                                                       ),
                                                     ),

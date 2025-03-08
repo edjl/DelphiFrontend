@@ -59,7 +59,7 @@ class ShareCard extends StatelessWidget {
                 ),
                 const Spacer(),
                 Text(
-                  '${share.shares.abs()} ${(share.shares > 0 ? "YES" : "NO")} @ ${share.price} c',
+                  '${AbbreviatedNumberstringFormat.formatWithCommas(share.shares.abs())} ${(share.shares > 0 ? "YES" : "NO")} @ ${share.price} c',
                   style: const TextStyle(
                     fontSize: 16,
                     fontWeight: FontWeight.w500,
