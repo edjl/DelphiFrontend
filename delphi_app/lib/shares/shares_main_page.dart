@@ -6,6 +6,7 @@ import '../shared_views/app_bar.dart';
 import 'share_card.dart';
 import '../model/share.dart';
 import 'sell_confirmation.dart';
+import 'dart:io';
 
 class SharesMainPage extends StatefulWidget {
   @override
@@ -80,15 +81,17 @@ class _SharesMainPage extends State<SharesMainPage> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: CustomAppBar(
-        title: 'My Shares',
-        height: 68,
-      ),
-      body: Stack(
-        children: [
-          /// Main content (Shares list)
-          ListView.builder(
+    return Stack(
+      children: [
+        Scaffold(
+          appBar: CustomAppBar(
+            title: 'My Shares',
+            height: 68,
+          ),
+          body:
+
+              /// Main content (Shares list)
+              ListView.builder(
             controller: _scrollController,
             itemCount: shares.length + 1,
             shrinkWrap: true,
@@ -141,16 +144,21 @@ class _SharesMainPage extends State<SharesMainPage> {
               }
             },
           ),
+        ),
 
-          /// Fading success message overlay (Non-interactive)
-          IgnorePointer(
-            ignoring: true, // Ensures this does NOT block any user interactions
-            child: AnimatedOpacity(
-              opacity: _showSuccessMessage ? 1.0 : 0.0,
-              duration: const Duration(milliseconds: 500),
-              child: Align(
-                alignment:
-                    Alignment.topRight, // Position it in the top right corner
+        /// Fading success message overlay (Non-interactive)
+        IgnorePointer(
+          ignoring: true, // Ensures this does NOT block any user interactions
+          child: AnimatedOpacity(
+            opacity: _showSuccessMessage ? 1.0 : 0.0,
+            duration: const Duration(milliseconds: 500),
+            child: Align(
+              alignment:
+                  Alignment.topRight, // Position it in the top right corner
+              child: Padding(
+                padding: EdgeInsets.only(
+                    top: Platform.isIOS ? 60.0 : 22.0,
+                    right: 20.0), // Add top and right padding
                 child: Container(
                   padding: const EdgeInsets.all(
                       8.0), // Optional padding for better spacing
@@ -167,9 +175,9 @@ class _SharesMainPage extends State<SharesMainPage> {
                 ),
               ),
             ),
-          )
-        ],
-      ),
+          ),
+        )
+      ],
     );
   }
 }

@@ -408,26 +408,22 @@ class _MySharesState extends State<MyShares> {
             opacity: _showSuccessMessage ? 1.0 : 0.0,
             duration: const Duration(milliseconds: 500),
             child: Align(
-              alignment: Alignment.topCenter, // Position it in the top center
-              child: Container(
-                color: Colors.white, // White background
-                width: double
-                    .infinity, // Make the background extend the full width
-                height: 50,
-                child: Padding(
-                  padding: const EdgeInsets.symmetric(
-                      horizontal: 12.0,
-                      vertical: 4.0), // Padding only around the text
-                  child: Center(
-                    child: Text(
-                      successMessage + " c",
-                      style: TextStyle(
-                        color: successMessage.startsWith('-')
-                            ? Colors.red
-                            : Colors.green, // Green if +, Red if -
-                        fontSize: 25, // Font size of the text
-                        fontWeight: FontWeight.bold,
-                      ),
+              alignment:
+                  Alignment.topRight, // Position it in the top right corner
+              child: Padding(
+                padding: const EdgeInsets.only(
+                    top: 0.0, right: 20.0), // Add top and right padding
+                child: Container(
+                  padding: const EdgeInsets.all(
+                      8.0), // Optional padding for better spacing
+                  child: Text(
+                    successMessage + " c",
+                    style: TextStyle(
+                      color: successMessage.startsWith('-')
+                          ? Colors.red
+                          : Colors.green, // Green if +, Red if -
+                      fontSize: 25, // Small font size
+                      fontWeight: FontWeight.bold,
                     ),
                   ),
                 ),
