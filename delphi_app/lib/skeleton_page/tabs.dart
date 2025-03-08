@@ -4,15 +4,6 @@ import '../bet/bet_main_page.dart';
 import '../shares/shares_main_page.dart';
 import '../leaderboard/leaderboard_main_page.dart';
 
-class StoreTab extends StatelessWidget {
-  const StoreTab({super.key});
-
-  @override
-  Widget build(BuildContext context) {
-    return const Text('Store Tab, coming soon!');
-  }
-}
-
 class ProfileTab extends StatelessWidget {
   const ProfileTab({super.key});
 

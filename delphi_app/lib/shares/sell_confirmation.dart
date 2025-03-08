@@ -1,17 +1,16 @@
+import 'package:delphi_app/shared_services/abbreviated_numberstring_format.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:cached_network_image/cached_network_image.dart';
+import 'package:delphi_app/shared_services/sound_effects.dart';
 import '../model/share.dart';
 import '../model/user_profile.dart';
-import 'package:cached_network_image/cached_network_image.dart';
 import "../bet/option_service.dart";
 
 class SellConfirmation extends StatefulWidget {
   final Share share;
 
-  const SellConfirmation({
-    required this.share,
-    Key? key,
-  }) : super(key: key);
+  const SellConfirmation({required this.share, Key? key}) : super(key: key);
 
   @override
   _SellConfirmationState createState() => _SellConfirmationState();
@@ -31,6 +30,7 @@ class _SellConfirmationState extends State<SellConfirmation> {
   @override
   void dispose() {
     numberController.removeListener(_validateInput);
+    numberController.dispose();
     super.dispose();
   }
 
@@ -63,12 +63,12 @@ class _SellConfirmationState extends State<SellConfirmation> {
         optionAmount,
       );
 
-      if (!sellSucceeded) {
-        throw Exception();
-      } else {}
+      if (!sellSucceeded) throw Exception();
+
+      await SoundEffects.playMoneySound();
       return true;
     } catch (e) {
-      print("Error buying option: $e");
+      print("Error selling option: $e");
       return false;
     }
   }
@@ -80,7 +80,7 @@ class _SellConfirmationState extends State<SellConfirmation> {
       title: Align(
         alignment: Alignment.center,
         child: Text(
-          '${widget.share.eventName}',
+          widget.share.eventName,
           textAlign: TextAlign.center,
           style: const TextStyle(
             fontFamily: 'IBM Plex Sans',
@@ -107,9 +107,7 @@ class _SellConfirmationState extends State<SellConfirmation> {
                 child: Text(
                   widget.share.optionName,
                   style: const TextStyle(
-                    fontFamily: 'IBM Plex Sans',
-                    fontSize: 15,
-                  ),
+                      fontFamily: 'IBM Plex Sans', fontSize: 15),
                   overflow: TextOverflow.ellipsis,
                 ),
               ),
@@ -141,13 +139,11 @@ class _SellConfirmationState extends State<SellConfirmation> {
                           int.parse(numberController.text) < 1 ||
                           int.parse(numberController.text) >
                               widget.share.shares.abs()))
-                  ? (widget.share.shares.abs() > 0
-                      ? 'Please enter a value between 1 and ${widget.share.shares.abs()}'
-                      : 'Not enough credits')
+                  ? 'Enter between 1 and ${widget.share.shares.abs()}'
                   : null,
             ),
             inputFormatters: <TextInputFormatter>[
-              FilteringTextInputFormatter.digitsOnly,
+              FilteringTextInputFormatter.digitsOnly
             ],
             onChanged: (value) {
               if (value.isNotEmpty) {
@@ -171,20 +167,18 @@ class _SellConfirmationState extends State<SellConfirmation> {
             children: [
               TextButton(
                 onPressed: () {
-                  Navigator.of(context).pop();
+                  Navigator.pop(context, "");
                 },
                 style: ButtonStyle(
-                  foregroundColor: WidgetStateProperty.resolveWith(
-                    (states) => Colors.blue,
-                  ),
+                  foregroundColor:
+                      WidgetStateProperty.resolveWith((states) => Colors.blue),
                 ),
                 child: const Text(
                   'Close',
                   style: TextStyle(
-                    fontFamily: 'IBM Plex Sans',
-                    fontWeight: FontWeight.w400,
-                    fontSize: 15,
-                  ),
+                      fontFamily: 'IBM Plex Sans',
+                      fontWeight: FontWeight.w400,
+                      fontSize: 15),
                 ),
               ),
               const SizedBox(width: 8),
@@ -192,10 +186,10 @@ class _SellConfirmationState extends State<SellConfirmation> {
                 onPressed: isSellEnabled
                     ? () async {
                         int optionAmount = int.parse(numberController.text);
-
                         int amountGain =
                             optionAmount * widget.share.currentPrice;
                         int initialAmount = optionAmount * widget.share.price;
+
                         UserProfile().sellShare(initialAmount, amountGain,
                             optionAmount == widget.share.shares.abs());
 
@@ -204,10 +198,19 @@ class _SellConfirmationState extends State<SellConfirmation> {
                           UserProfile().refundSale(initialAmount, amountGain,
                               optionAmount == widget.share.shares.abs());
                           _showFailureMessage(context);
-                          Navigator.pop(context, false);
-                        }
-                        if (mounted) {
-                          Navigator.pop(context, true);
+                          if (mounted)
+                            Navigator.pop(
+                                context, ""); // Sale failed -> return ""
+                        } else {
+                          if (mounted) {
+                            Navigator.pop(
+                                context,
+                                ((amountGain >= initialAmount) ? "+" : "-") +
+                                    AbbreviatedNumberstringFormat
+                                        .formatMarketCap((amountGain -
+                                                initialAmount)
+                                            .abs())); // Sale successful -> return profit
+                          }
                         }
                       }
                     : null,
@@ -227,10 +230,8 @@ class _SellConfirmationState extends State<SellConfirmation> {
                     child: Text(
                       'Sell',
                       textAlign: TextAlign.center,
-                      style: TextStyle(
-                        fontWeight: FontWeight.w600,
-                        fontSize: 14,
-                      ),
+                      style:
+                          TextStyle(fontWeight: FontWeight.w600, fontSize: 14),
                     ),
                   ),
                 ),

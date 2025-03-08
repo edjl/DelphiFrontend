@@ -6,6 +6,7 @@ import '../shared_views/app_bar.dart';
 import 'share_card.dart';
 import '../model/share.dart';
 import 'sell_confirmation.dart';
+import 'dart:io';
 
 class SharesMainPage extends StatefulWidget {
   @override
@@ -17,9 +18,11 @@ class _SharesMainPage extends State<SharesMainPage> {
   List<Share> shares = [];
   bool isLoading = false;
   int currentPage = 1;
-  String orderBy = 'purchase_date_time'; // Change according to your preference
-  String orderDirection = 'desc'; // Change according to your preference
-  List<String>? categories = []; // Update categories as needed
+  String orderBy = 'purchase_date_time';
+  String orderDirection = 'desc';
+  List<String>? categories = [];
+  String successMessage = "";
+  bool _showSuccessMessage = false;
 
   @override
   void initState() {
@@ -49,11 +52,25 @@ class _SharesMainPage extends State<SharesMainPage> {
         });
       }
     } catch (e) {
-      // Handle errors
       print("Error loading shares: $e");
     } finally {
-      isLoading = false;
+      setState(() {
+        isLoading = false;
+      });
     }
+  }
+
+  void _triggerSuccessMessage(String successMsg) {
+    successMessage = successMsg;
+    setState(() {
+      _showSuccessMessage = true;
+    });
+
+    Future.delayed(const Duration(seconds: 1), () {
+      setState(() {
+        _showSuccessMessage = false;
+      });
+    });
   }
 
   @override
@@ -64,61 +81,103 @@ class _SharesMainPage extends State<SharesMainPage> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-        appBar: CustomAppBar(
-          title: 'My Shares',
-          height: 68,
-        ),
-        body: ListView.builder(
-          controller: _scrollController,
-          itemCount: shares.length + 1, // Include the button as the last item
-          shrinkWrap:
-              true, // This ensures the ListView is tightly wrapped around the items
-          padding: EdgeInsets.zero, // Remove any default padding from ListView
-          itemBuilder: (context, index) {
-            if (index < shares.length) {
-              // Build event cards
-              return GestureDetector(
-                onTap: () async {
-                  final result = await showDialog(
-                    context: context,
-                    barrierDismissible: true,
-                    builder: (BuildContext context) {
-                      return SellConfirmation(share: shares[index]);
-                    },
-                  );
+    return Stack(
+      children: [
+        Scaffold(
+          appBar: CustomAppBar(
+            title: 'My Shares',
+            height: 68,
+          ),
+          body:
 
-                  if (result == true) {
-                    setState(() {
-                      shares.clear();
-                      currentPage = 1;
-                    });
-                    _loadShares();
-                  }
-                },
-                child: ShareCard(share: shares[index]),
-              );
-            } else {
-              // Build the "Load More Shares" button
-              return Center(
-                child: Padding(
-                  padding: const EdgeInsets.symmetric(vertical: 8),
-                  child: ElevatedButton(
-                    onPressed: () {
+              /// Main content (Shares list)
+              ListView.builder(
+            controller: _scrollController,
+            itemCount: shares.length + 1,
+            shrinkWrap: true,
+            padding: EdgeInsets.zero,
+            itemBuilder: (context, index) {
+              if (index < shares.length) {
+                return GestureDetector(
+                  onTap: () async {
+                    final result = await showDialog(
+                      context: context,
+                      barrierDismissible: true,
+                      builder: (BuildContext context) {
+                        return SellConfirmation(share: shares[index]);
+                      },
+                    );
+
+                    if ((result is! Null) &&
+                        (result is String) &&
+                        result != "") {
+                      _triggerSuccessMessage(result);
+                      setState(() {
+                        shares.clear();
+                        currentPage = 1;
+                      });
                       _loadShares();
-                    },
-                    child: Text(
-                      "Load More Shares",
-                      style: GoogleFonts.ibmPlexSans(
-                        fontSize: 12,
-                        color: Colors.black,
+                    }
+                  },
+                  child: ShareCard(share: shares[index]),
+                );
+              } else {
+                return Visibility(
+                  visible: !isLoading, // Make button invisible when loading
+                  child: Center(
+                    child: Padding(
+                      padding: EdgeInsets.symmetric(
+                          vertical: (shares.isEmpty) ? 48 : 8),
+                      child: ElevatedButton(
+                        onPressed: _loadShares,
+                        child: Text(
+                          "Load More Shares",
+                          style: GoogleFonts.ibmPlexSans(
+                            fontSize: 12,
+                            color: Colors.black,
+                          ),
+                        ),
                       ),
                     ),
                   ),
+                );
+              }
+            },
+          ),
+        ),
+
+        /// Fading success message overlay (Non-interactive)
+        IgnorePointer(
+          ignoring: true, // Ensures this does NOT block any user interactions
+          child: AnimatedOpacity(
+            opacity: _showSuccessMessage ? 1.0 : 0.0,
+            duration: const Duration(milliseconds: 500),
+            child: Align(
+              alignment:
+                  Alignment.topRight, // Position it in the top right corner
+              child: Padding(
+                padding: EdgeInsets.only(
+                    top: Platform.isIOS ? 60.0 : 22.0,
+                    right: 20.0), // Add top and right padding
+                child: Container(
+                  padding: const EdgeInsets.all(
+                      8.0), // Optional padding for better spacing
+                  child: Text(
+                    successMessage + " c",
+                    style: TextStyle(
+                      color: successMessage.startsWith('-')
+                          ? Colors.red
+                          : Colors.green, // Green if +, Red if -
+                      fontSize: 25, // Small font size
+                      fontWeight: FontWeight.bold,
+                    ),
+                  ),
                 ),
-              );
-            }
-          },
-        ));
+              ),
+            ),
+          ),
+        )
+      ],
+    );
   }
 }

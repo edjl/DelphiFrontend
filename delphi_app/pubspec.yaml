@@ -41,8 +41,10 @@ dependencies:
   google_fonts: ^6.0.0
   intl: ^0.18.0
   path_provider: ^2.0.0
+  audioplayers: ^5.2.1
 
 dev_dependencies:
+  flutter_launcher_icons: ^0.10.0
   flutter_test:
     sdk: flutter
 
@@ -66,8 +68,9 @@ flutter:
 
   # To add assets to your application, add an assets section, like this:
   assets:
-    - images/icons8-chip-100.png
-
+    - assets/images/icons8-chip-100.png
+    - assets/sounds/money.mp3
+    - assets/sounds/background.mp3
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.dev/to/resolution-aware-images
 
@@ -85,5 +88,12 @@ flutter:
       fonts:
         - asset: fonts/Righteous-Regular.ttf
         
-  # For details regarding fonts from package dependencies,
+  # For details regarding fonts from package dependencies,r
   # see https://flutter.dev/to/font-from-package
+
+
+flutter_icons:
+  android: true
+  ios: true
+  image_path_android: "assets/icons/android_icon.png"  # Android-specific icon
+  image_path_ios: "assets/icons/ios_icon.png"          # iOS-specific icon

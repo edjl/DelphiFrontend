@@ -4,6 +4,7 @@ import '../model/option.dart';
 import '../model/user_profile.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import "option_service.dart";
+import '../shared_services/sound_effects.dart';
 
 class BetConfirmation extends StatefulWidget {
   final Option option;
@@ -77,7 +78,9 @@ class _BetConfirmationState extends State<BetConfirmation> {
 
       if (!buySucceeded) {
         throw Exception();
-      } else {}
+      }
+
+      await SoundEffects.playMoneySound();
       return true;
     } catch (e) {
       print("Error buying option: $e");

@@ -29,15 +29,6 @@ class _BetMainPage extends State<BetMainPage> {
     _loadEvents();
   }
 
-  /*void _scrollListener() {
-    if (_scrollController.position.pixels ==
-            _scrollController.position.maxScrollExtent &&
-        !isLoading) {
-      // Load more events when the bottom is reached
-      _loadEvents();
-    }
-  }*/
-
   Future<void> _loadEvents() async {
     setState(() {
       isLoading = true;
@@ -62,7 +53,9 @@ class _BetMainPage extends State<BetMainPage> {
       // Handle errors
       print("Error loading events: $e");
     } finally {
-      isLoading = false;
+      setState(() {
+        isLoading = false;
+      });
     }
   }
 
@@ -95,24 +88,25 @@ class _BetMainPage extends State<BetMainPage> {
                 child: EventCard(event: events[index]),
               );
             } else {
-              // Build the "Load More Events" button
-              return Center(
-                child: Padding(
-                  padding: const EdgeInsets.symmetric(vertical: 8),
-                  child: ElevatedButton(
-                    onPressed: () {
-                      _loadEvents();
-                    },
-                    child: Text(
-                      "Load More Events",
-                      style: GoogleFonts.ibmPlexSans(
-                        fontSize: 12,
-                        color: Colors.black,
+              return Visibility(
+                  visible: !isLoading, // Make button invisible when loading
+                  child: Center(
+                    child: Padding(
+                      padding: const EdgeInsets.symmetric(vertical: 8),
+                      child: ElevatedButton(
+                        onPressed: () {
+                          _loadEvents();
+                        },
+                        child: Text(
+                          "Load More Events",
+                          style: GoogleFonts.ibmPlexSans(
+                            fontSize: 12,
+                            color: Colors.black,
+                          ),
+                        ),
                       ),
                     ),
-                  ),
-                ),
-              );
+                  ));
             }
           },
         ));

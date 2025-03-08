@@ -59,7 +59,7 @@ class _BetEventPageState extends State<BetEventPage> {
                       children: [
                         Text(
                           titleText,
-                          style: TextStyle(
+                          style: const TextStyle(
                             fontFamily: 'IBM Plex Sans',
                             fontSize: 22,
                             fontWeight: FontWeight.w600,
@@ -165,7 +165,7 @@ class _BetEventPageState extends State<BetEventPage> {
                               ),
                             ],
                           ),
-                          SizedBox(height: 16),
+                          const SizedBox(height: 16),
                           // Options list
                           Column(
                             children: [
@@ -222,7 +222,7 @@ class _BetEventPageState extends State<BetEventPage> {
                                               height: 29,
                                               fit: BoxFit.cover,
                                             ),
-                                            SizedBox(width: 16),
+                                            const SizedBox(width: 16),
                                             // Option title
                                             Expanded(
                                               child: Text(
@@ -230,7 +230,7 @@ class _BetEventPageState extends State<BetEventPage> {
                                                 style: TextStyle(fontSize: 16),
                                               ),
                                             ),
-                                            SizedBox(width: 16),
+                                            const SizedBox(width: 16),
                                             // Positive price button
                                             ValueListenableBuilder<int>(
                                               valueListenable:
@@ -276,7 +276,7 @@ class _BetEventPageState extends State<BetEventPage> {
                                                       borderRadius:
                                                           BorderRadius.circular(
                                                               3),
-                                                      side: BorderSide(
+                                                      side: const BorderSide(
                                                           color: Colors.black,
                                                           width: 1),
                                                     ),
@@ -292,7 +292,11 @@ class _BetEventPageState extends State<BetEventPage> {
                                                         style: TextStyle(
                                                           fontWeight:
                                                               FontWeight.w600,
-                                                          fontSize: 16,
+                                                          fontSize:
+                                                              (option.positivePrice ==
+                                                                      100)
+                                                                  ? 13
+                                                                  : 15,
                                                         ),
                                                       ),
                                                     ),
@@ -362,7 +366,11 @@ class _BetEventPageState extends State<BetEventPage> {
                                                         style: TextStyle(
                                                           fontWeight:
                                                               FontWeight.w600,
-                                                          fontSize: 16,
+                                                          fontSize:
+                                                              (option.negativePrice ==
+                                                                      100)
+                                                                  ? 13
+                                                                  : 15,
                                                         ),
                                                       ),
                                                     ),
