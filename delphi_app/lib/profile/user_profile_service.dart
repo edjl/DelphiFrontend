@@ -79,6 +79,11 @@ class UserProfileService {
       } else {
         // Handle network failure or non-200 status code
         print('Failed to load user profile.');
+        final data = json.decode(response.body);
+        if (data['error'] == "ID not found") {
+          UserProfile().userId.value = -1;
+          saveUserProfile();
+        }
       }
     } catch (e) {
       print('Error fetching user profile: $e');

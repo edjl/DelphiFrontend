@@ -1,7 +1,7 @@
-import 'package:delphi_app/authentication/signup_page.dart';
 import 'package:flutter/material.dart';
 import '../model/user_profile.dart';
 import '../authentication/login_page.dart';
+import '../authentication/authentication_service.dart';
 import 'user_profile_service.dart';
 import '../shared_views/app_bar.dart';
 import '../shared_services/abbreviated_numberstring_format.dart';
@@ -130,31 +130,63 @@ class ProfilePage extends StatelessWidget {
                   ),
                   Padding(
                     padding: const EdgeInsets.only(
-                        bottom: 50.0), // Adjust the bottom padding
+                        bottom: 50.0,
+                        left: 20.0,
+                        right: 20.0), // Adjust the bottom padding
                     child: Center(
-                      child: ElevatedButton(
-                        onPressed: () {
-                          // Log the user out
-                          userProfile.logOut();
-                          UserProfileService().saveUserProfile();
-                        },
-                        style: ElevatedButton.styleFrom(
-                          backgroundColor: Colors.blue,
-                          foregroundColor: Colors.white,
-                          padding: const EdgeInsets.symmetric(
-                              horizontal: 36, vertical: 13),
-                          textStyle: const TextStyle(
-                            fontSize: 18,
-                            fontFamily: 'IBM Plex Sans',
-                            fontWeight: FontWeight.w500,
+                      child: Row(children: [
+                        ElevatedButton(
+                          onPressed: () {
+                            // Log the user out
+                            userProfile.logOut();
+                            UserProfileService().saveUserProfile();
+                          },
+                          style: ElevatedButton.styleFrom(
+                            backgroundColor: Colors.blue,
+                            foregroundColor: Colors.white,
+                            padding: const EdgeInsets.symmetric(
+                                horizontal: 36, vertical: 13),
+                            textStyle: const TextStyle(
+                              fontSize: 18,
+                              fontFamily: 'IBM Plex Sans',
+                              fontWeight: FontWeight.w500,
+                            ),
+                            shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(5),
+                              side: BorderSide(color: Colors.black, width: 1.5),
+                            ),
                           ),
-                          shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(5),
-                            side: BorderSide(color: Colors.black, width: 1.5),
-                          ),
+                          child: const Text('Log Out'),
                         ),
-                        child: const Text('Log Out'),
-                      ),
+                        const SizedBox(width: 10),
+                        ElevatedButton(
+                          onPressed: () async {
+                            final result =
+                                await AuthenticationService.deleteAccount(
+                                    userProfile.userId.value);
+                            if (result) {
+                              userProfile.logOut();
+                              UserProfileService().saveUserProfile();
+                            }
+                          },
+                          style: ElevatedButton.styleFrom(
+                            backgroundColor: Colors.blue,
+                            foregroundColor: Colors.white,
+                            padding: const EdgeInsets.symmetric(
+                                horizontal: 36, vertical: 13),
+                            textStyle: const TextStyle(
+                              fontSize: 18,
+                              fontFamily: 'IBM Plex Sans',
+                              fontWeight: FontWeight.w500,
+                            ),
+                            shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(5),
+                              side: BorderSide(color: Colors.black, width: 1.5),
+                            ),
+                          ),
+                          child: const Text('Delete Account'),
+                        ),
+                      ]),
                     ),
                   )
                 ],
