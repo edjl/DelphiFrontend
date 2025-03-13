@@ -46,6 +46,9 @@ class UserProfileService {
   }
 
   void refresh() async {
+    if (UserProfile().userId.value == -1) {
+      return;
+    }
     try {
       final response = await http.get(
         Uri.parse(
@@ -72,6 +75,7 @@ class UserProfileService {
           UserProfile().profitMultiplier = user['profit_multiplier'];
 
           UserProfileService().saveUserProfile();
+          return;
         } else {
           // Handle failure
           print('Failed to fetch user profile.');
@@ -80,13 +84,12 @@ class UserProfileService {
         // Handle network failure or non-200 status code
         print('Failed to load user profile.');
         final data = json.decode(response.body);
-        if (data['error'] == "ID not found") {
-          UserProfile().userId.value = -1;
-          saveUserProfile();
-        }
+        if (data['error'] == "ID not found") {}
       }
     } catch (e) {
       print('Error fetching user profile: $e');
     }
+    UserProfile().userId.value = -1;
+    saveUserProfile();
   }
 }
