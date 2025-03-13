@@ -42,6 +42,15 @@ class _SignUpPageState extends State<SignUpPage> {
       return;
     }
 
+    // Basic email validation with regex
+    final RegExp emailRegex =
+        RegExp(r'^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$');
+    if (!emailRegex.hasMatch(email)) {
+      _isLoading = false;
+      _errorMessage = 'Enter a valid email';
+      return;
+    }
+
     var response =
         await AuthenticationService.signup(username, email, password);
 

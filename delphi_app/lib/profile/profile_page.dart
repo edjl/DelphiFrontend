@@ -158,7 +158,7 @@ class ProfilePage extends StatelessWidget {
                           ),
                           child: const Text('Log Out'),
                         ),
-                        const SizedBox(width: 10),
+                        /*const SizedBox(width: 10),
                         ElevatedButton(
                           onPressed: () async {
                             final result =
@@ -185,7 +185,7 @@ class ProfilePage extends StatelessWidget {
                             ),
                           ),
                           child: const Text('Delete Account'),
-                        ),
+                        ),*/
                       ]),
                     ),
                   )
