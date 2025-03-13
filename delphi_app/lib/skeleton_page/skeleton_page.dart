@@ -1,3 +1,4 @@
+import 'package:delphi_app/shared_services/sound_effects.dart';
 import 'package:flutter/material.dart';
 import 'tabs.dart';
 import '../constants/graphics_constants.dart';
@@ -22,13 +23,13 @@ class _SkeletonPageState extends State<SkeletonPage> {
   ];
 
   void _onItemTapped(int index) {
-    setState(() {
-      _selectedIndex = index;
-    });
-
     if (index == 1) {
       UserProfileService().loadUserProfile();
     }
+
+    setState(() {
+      _selectedIndex = index;
+    });
   }
 
   Widget _buildIcon(int index, IconData? icon, String? assetPath) {

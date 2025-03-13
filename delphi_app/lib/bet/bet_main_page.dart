@@ -1,3 +1,4 @@
+import 'package:delphi_app/shared_services/sound_effects.dart';
 import 'package:flutter/material.dart';
 import '../model/event.dart';
 import 'get_events_service.dart';

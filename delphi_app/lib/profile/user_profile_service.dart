@@ -2,14 +2,34 @@ import '../model/user_profile.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert'; // For JSON decoding
 
+import 'package:flutter/foundation.dart'; // For checking if web or mobile
+import 'user_profile_service_mobile.dart';
+import 'user_profile_service_web.dart';
+
 class UserProfileService {
   Future<void> loadUserProfile() async {
+    if (kIsWeb) {
+      UserProfile().userId.value = getCookie("user_id") ?? -1;
+    } else {
+      // App-specific: Load from local storage
+      await loadUserProfileFromLocalStorage();
+    }
     refresh();
   }
 
-  Future<void> saveUserProfile() async {}
+  Future<void> saveUserProfile() async {
+    if (kIsWeb) {
+      setCookie("user_id", UserProfile().userId.value);
+    } else {
+      // App-specific: Save to local storage
+      saveUserProfileToLocalStorage();
+    }
+  }
 
   void refresh() async {
+    if (UserProfile().userId.value == -1) {
+      return;
+    }
     try {
       final response = await http.get(
         Uri.parse(

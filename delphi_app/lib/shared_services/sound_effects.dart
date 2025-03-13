@@ -12,9 +12,13 @@ class SoundEffects {
 
   // Start playing background music on loop
   static Future<void> playBackgroundMusic() async {
-    await _backgroundPlayer.setReleaseMode(ReleaseMode.loop);
-    await _backgroundPlayer.setVolume(0.25); // Adjust background music volume
-    await _backgroundPlayer.play(AssetSource('sounds/background.mp3'));
+    try {
+      await _backgroundPlayer.setReleaseMode(ReleaseMode.loop);
+      await _backgroundPlayer.setVolume(0.20);
+      await _backgroundPlayer.play(AssetSource('sounds/background.mp3'));
+    } catch (_) {
+      print("Browser, so music doesn't start");
+    }
   }
 
   // Stop background music

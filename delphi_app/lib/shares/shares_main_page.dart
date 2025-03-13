@@ -122,25 +122,41 @@ class _SharesMainPage extends State<SharesMainPage> {
                   child: ShareCard(share: shares[index]),
                 );
               } else {
-                return Visibility(
-                  visible: !isLoading, // Make button invisible when loading
-                  child: Center(
+                if (UserProfile().userId.value == -1) {
+                  return Center(
                     child: Padding(
                       padding: EdgeInsets.symmetric(
                           vertical: (shares.isEmpty) ? 48 : 8),
-                      child: ElevatedButton(
-                        onPressed: _loadShares,
-                        child: Text(
-                          "Load More Shares",
-                          style: GoogleFonts.ibmPlexSans(
-                            fontSize: 12,
-                            color: Colors.black,
+                      child: Text(
+                        "Login to buy shares.",
+                        style: GoogleFonts.ibmPlexSans(
+                          fontSize: 15,
+                          color: Colors.black,
+                        ),
+                      ),
+                    ),
+                  );
+                } else {
+                  return Visibility(
+                    visible: !isLoading, // Make button invisible when loading
+                    child: Center(
+                      child: Padding(
+                        padding: EdgeInsets.symmetric(
+                            vertical: (shares.isEmpty) ? 48 : 8),
+                        child: ElevatedButton(
+                          onPressed: _loadShares,
+                          child: Text(
+                            "Load More Shares",
+                            style: GoogleFonts.ibmPlexSans(
+                              fontSize: 12,
+                              color: Colors.black,
+                            ),
                           ),
                         ),
                       ),
                     ),
-                  ),
-                );
+                  );
+                }
               }
             },
           ),
@@ -157,7 +173,7 @@ class _SharesMainPage extends State<SharesMainPage> {
                   Alignment.topRight, // Position it in the top right corner
               child: Padding(
                 padding: EdgeInsets.only(
-                    top: Platform.isIOS ? 60.0 : 22.0,
+                    top: 20.0, //Platform.isIOS ? 60.0 : 22.0,
                     right: 20.0), // Add top and right padding
                 child: Container(
                   padding: const EdgeInsets.all(
