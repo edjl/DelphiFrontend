@@ -18,8 +18,8 @@ class _BetMainPage extends State<BetMainPage> {
   List<Event> events = [];
   bool isLoading = false;
   int currentPage = 1;
-  String orderBy = 'market_cap'; // Change according to your preference
-  String orderDirection = 'desc'; // Change according to your preference
+  String orderBy = 'end_date'; // Change according to your preference
+  String orderDirection = 'asc'; // Change according to your preference
   List<String>? categories = []; // Update categories as needed
 
   @override
