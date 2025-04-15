@@ -3,6 +3,16 @@ import '../profile/profile_page.dart';
 import '../bet/bet_main_page.dart';
 import '../shares/shares_main_page.dart';
 import '../leaderboard/leaderboard_main_page.dart';
+import '../gambling_info/gambling_info_main_page.dart';
+
+class GamblingInfoTab extends StatelessWidget {
+  const GamblingInfoTab({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return const GamblingInfoMainPage();
+  }
+}
 
 class ProfileTab extends StatelessWidget {
   const ProfileTab({super.key});

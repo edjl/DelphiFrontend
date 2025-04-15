@@ -11,9 +11,10 @@ class SkeletonPage extends StatefulWidget {
 }
 
 class _SkeletonPageState extends State<SkeletonPage> {
-  int _selectedIndex = 1;
+  int _selectedIndex = 2;
 
   static const List<Widget> _widgetOptions = <Widget>[
+    GamblingInfoTab(),
     ProfileTab(),
     BetTab(),
     SharesTab(),
@@ -73,22 +74,27 @@ class _SkeletonPageState extends State<SkeletonPage> {
           child: BottomNavigationBar(
             items: <BottomNavigationBarItem>[
               BottomNavigationBarItem(
-                icon: _buildIcon(0, Icons.person, null),
+                icon: _buildIcon(0, Icons.info_rounded, null),
+                label: 'Info',
+                backgroundColor: GraphicsConstants.lightColorTheme,
+              ),
+              BottomNavigationBarItem(
+                icon: _buildIcon(1, Icons.person, null),
                 label: 'Profile',
                 backgroundColor: GraphicsConstants.lightColorTheme,
               ),
               BottomNavigationBarItem(
-                icon: _buildIcon(1, null, 'assets/images/icons8-chip-100.png'),
+                icon: _buildIcon(2, null, 'assets/images/icons8-chip-100.png'),
                 label: 'Bet',
                 backgroundColor: GraphicsConstants.lightColorTheme,
               ),
               BottomNavigationBarItem(
-                icon: _buildIcon(2, Icons.folder, null),
+                icon: _buildIcon(3, Icons.folder, null),
                 label: 'Shares',
                 backgroundColor: GraphicsConstants.lightColorTheme,
               ),
               BottomNavigationBarItem(
-                icon: _buildIcon(3, Icons.leaderboard, null),
+                icon: _buildIcon(4, Icons.leaderboard, null),
                 label: 'Rankings',
                 backgroundColor: GraphicsConstants.lightColorTheme,
               ),

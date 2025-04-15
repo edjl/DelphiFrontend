@@ -64,6 +64,7 @@ class _DelphiAppState extends State<DelphiApp> with WidgetsBindingObserver {
         useMaterial3: true,
       ),
       home: const UserProfileLoader(),
+      debugShowCheckedModeBanner: false,
     );
   }
 }

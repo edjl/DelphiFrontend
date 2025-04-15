@@ -88,16 +88,34 @@ class AuthenticationService {
           UserProfileService().saveUserProfile();
         } else {
           // Handle failure
-          print('Failed to fetch user profile.');
+          print('Failed to fetch user profile. 1');
         }
       } else {
         // Handle network failure or non-200 status code
-        print('Failed to load user profile.');
+        print('Failed to load user profile. 2');
       }
     } catch (e) {
       print('Error fetching user profile: $e');
     }
   }
-}
 
-// TODO: create a new user with signup notification
+  // Function to fetch user profile after login and update Singleton
+  static Future<bool> deleteAccount(int userId) async {
+    try {
+      final response = await http.get(
+        Uri.parse('https://user.fleure.workers.dev/api/DeleteAccount/$userId'),
+        headers: {'accept': '*/*'},
+      );
+
+      if (response.statusCode == 200) {
+        final data = json.decode(response.body);
+        if (data['success']) {
+          return true;
+        }
+      }
+    } catch (e) {
+      print('Error fetching user profile: $e');
+    }
+    return false;
+  }
+}

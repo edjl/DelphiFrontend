@@ -1,0 +1,2 @@
+/Users/edlee/Documents/Delphi/DelphiFrontend/delphi_app/android/app/.cxx/RelWithDebInfo/1x6u6x4f/arm64-v8a/CMakeFiles/edit_cache.dir
+/Users/edlee/Documents/Delphi/DelphiFrontend/delphi_app/android/app/.cxx/RelWithDebInfo/1x6u6x4f/arm64-v8a/CMakeFiles/rebuild_cache.dir
